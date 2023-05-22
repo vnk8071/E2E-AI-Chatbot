@@ -22,33 +22,33 @@ def predict(
     chatbot: list = [],
     history: list = [],
 ):
-    # try:
-    # Prepare the LLM
-    if model_type == "GPT4All":
-        llm = GPT4AllModel(model_path=model_path)
-    else:
-        print(f"Model {model_type} not supported!")
+    try:
+        # Prepare the LLM
+        if model_type == "GPT4All":
+            llm = GPT4AllModel(model_path=model_path)
+        else:
+            print(f"Model {model_type} not supported!")
 
-    # Get the answer from the chain
-    answer = llm(
-        system_content=system_content,
-        question=question
-    )
-    answer = post_process_code(answer)
-    answer = post_process_answer(answer)
-    history.append(question)
-    history.append(answer)
-    chatbot = [(history[i], history[i + 1])
-                for i in range(0, len(history), 2)]
-    return chatbot, history
+        # Get the answer from the chain
+        answer = llm(
+            system_content=system_content,
+            question=question
+        )
+        answer = post_process_code(answer)
+        answer = post_process_answer(answer)
+        history.append(question)
+        history.append(answer)
+        chatbot = [(history[i], history[i + 1])
+                   for i in range(0, len(history), 2)]
+        return chatbot, history
 
-    # except Exception:
-    #     history.append("")
-    #     answer = server_error_msg + " (error_code: 503)"
-    #     history.append(answer)
-    #     chatbot = [(history[i], history[i + 1])
-    #                for i in range(0, len(history), 2)]
-    #     return chatbot, history
+    except Exception:
+        history.append("")
+        answer = server_error_msg + " (error_code: 503)"
+        history.append(answer)
+        chatbot = [(history[i], history[i + 1])
+                   for i in range(0, len(history), 2)]
+        return chatbot, history
 
 
 def main(args):
