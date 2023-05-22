@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "e2e-ai-chatbot"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "e2e_ai_chatbot"}]
+
+[tool.poetry.dependencies]
+python = "3.8.10"
+gradio = "3.28.3"
+pydantic = "^1"
+gpt4all = "0.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
