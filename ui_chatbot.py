@@ -52,7 +52,7 @@ def predict(
 
 
 def main(args):
-    title = """<h1 align="center">Chat with 🤖</h1>"""
+    title = """<h1 align="center">Chat with AI Chatbot🤖</h1>"""
 
     with gr.Blocks(
         css="""

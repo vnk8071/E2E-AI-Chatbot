@@ -1,16 +1,21 @@
-# E2E-AI-Chatbot
+# E2E-AI-Chatbot 🤖
 Description: Pipeline offline of using GPT4ALL model combine with own context for generating answer.
 
-## Installation Requirements
-- Minimum CPU 8GiB RAM
-```
-curl -sSL https://install.python-poetry.org | python3 -
-poetry shell
-```
+[**Pipeline**](#pipeline) | [**Installation**](#installation-requirements) | [**UI Chatbot**](#ui-chatbot) | [**Model**](#models)
+
+[![Flake8 lint](https://github.com/vnk8071/E2E-AI-Chatbot/actions/workflows/lint.yml/badge.svg)](https://github.com/vnk8071/E2E-AI-Chatbot/actions/workflows/lint.yml)
+
 
 ## Pipeline
 
-## User Interface Chatbot
+## Installation Requirements
+- Minimum CPU 8GiB RAM
+- Install packages and download GPT4All model by
+```bash
+bash ./setup.sh
+```
+
+## UI Chatbot
 ```
 poetry run python ui_chatbot.py
 ```
@@ -22,3 +27,13 @@ poetry run python ui_chatbot.py
 ## Impressive
 - From Langchain Framework: https://github.com/hwchase17/langchain
 - From GPT4All: https://github.com/nomic-ai/gpt4all
+```
+@misc{gpt4all,
+  author = {Yuvanesh Anand and Zach Nussbaum and Brandon Duderstadt and Benjamin Schmidt and Andriy Mulyar},
+  title = {GPT4All: Training an Assistant-style Chatbot with Large Scale Data Distillation from GPT-3.5-Turbo},
+  year = {2023},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/nomic-ai/gpt4all}},
+}
+```
