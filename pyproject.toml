@@ -8,7 +8,7 @@ packages = [{include = "e2e_ai_chatbot"}]
 repository = "https://github.com/vnk8071/E2E-AI-Chatbot"
 
 [tool.poetry.dependencies]
-python = "3.8.10"
+python = ">=3.8.1,<4.0"
 gradio = "3.28.3"
 pydantic = "^1"
 gpt4all = "0.2.3"
