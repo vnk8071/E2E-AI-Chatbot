@@ -13,31 +13,13 @@ gradio = "3.28.3"
 pydantic = "^1"
 gpt4all = "0.2.3"
 
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-
-[tool.poetry.group.test.dependencies]
-# The only dependencies that should be added are
-# dependencies used for running tests (e.g., pytest, freezegun, response).
-# Any dependencies that do not meet that criteria will be removed.
-pytest = "^7.3.0"
-pytest-cov = "^4.0.0"
-pytest-dotenv = "^0.5.2"
-duckdb-engine = "^0.7.0"
-pytest-watcher = "^0.2.6"
-freezegun = "^1.2.2"
-responses = "^0.22.0"
-pytest-asyncio = "^0.20.3"
-lark = "^1.1.5"
-pytest-mock  = "^3.10.0"
-pytest-socket = "^0.6.0"
-
 [tool.poetry.group.lint.dependencies]
+flake8 = "^6.0.0"
 ruff = "^0.0.249"
 types-toml = "^0.10.8.1"
 types-redis = "^4.3.21.6"
 black = "^23.1.0"
-flake8 = "^6.0.0"
