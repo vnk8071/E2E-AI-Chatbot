@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["KhoiVN", "nguyenkhoi8071@gmail.com"]
 readme = "README.md"
-packages = [{include = "e2e_ai_chatbot"}]
 repository = "https://github.com/vnk8071/E2E-AI-Chatbot"
 
 [tool.poetry.dependencies]
