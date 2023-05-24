@@ -1,14 +1,17 @@
 import logging
-import uuid
 from typing import Any, Iterable, List, Type, Optional
 
 from databases import DB, Document, DatabaseBase
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class MongoDBClient(DatabaseBase):
-    def __init__(self, mongodb_host: str = "mongodb://localhost:27017/") -> None:
+    def __init__(
+        self,
+        mongodb_host: str = "mongodb://localhost:27017/",
+        database_name: str = "document"
+    ) -> None:
         """Initialize with MongoDB client."""
         try:
             from pymongo import MongoClient
@@ -19,17 +22,18 @@ class MongoDBClient(DatabaseBase):
             )
         self.mongodb_host = mongodb_host
         self.mongo_client = MongoClient(self.mongodb_host)
+        self.mongo_database = self.mongo_client[database_name]
+        self.mongo_connect = self.mongo_database[database_name]
 
     def check_database(
         self,
         database_test: str = "database_test"
     ) -> None:
         """"""
-        database = self.mongo_client[database_test]
-        logger.info(database)
-        # mongodb_list = database.list_database_names()
-        # if database_test in mongodb_list:
-        #     logger.info("The database exists.")
+        if database_test in self.mongo_client.list_databases():
+            logger.info("The database exists.")
+        else:
+            logger.info(f"The {database_test} not exists and auto create.")
 
     def add_contents(
             self,
@@ -37,9 +41,7 @@ class MongoDBClient(DatabaseBase):
             ids: Optional[List[str]] = None,
             **kargs: Any
     ) -> List[str]:
-        if ids is None:
-            ids = [str(uuid.uuid1()) for _ in contents]
-        self.mongo_client.insert_many(contents=contents, ids=ids)
+        self.mongo_connect.insert_many(documents=contents)
         return ids
 
     @classmethod
@@ -78,7 +80,7 @@ class MongoDBClient(DatabaseBase):
         Returns:
             MongoDBClient: MongoDBClient database.
         """
-        contents = [doc.page_content for doc in documents]
+        contents = [document.content for document in documents]
         return cls(
             contents=contents,
             mongodb_host=mongodb_host
