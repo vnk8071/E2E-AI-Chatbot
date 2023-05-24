@@ -44,8 +44,12 @@ class MongoDBClient(DatabaseBase):
         self.mongo_connect.insert_many(documents=contents)
         return ids
 
+    def get_contents(self):
+        """Return all items in database"""
+        return [doc for doc in self.mongo_connect.find()]
+
     @classmethod
-    def get_contents(
+    def _add_contents(
         cls: Type[DB],
         contents: Iterable[str],
         mongodb_host: str = "mongodb://localhost:27017/",
@@ -66,7 +70,7 @@ class MongoDBClient(DatabaseBase):
         return mongo_collection
 
     @classmethod
-    def get_documents(
+    def _get_documents(
         cls: Type[DB],
         documents: List[Document],
         mongodb_host: str = "mongodb://localhost:27017/",

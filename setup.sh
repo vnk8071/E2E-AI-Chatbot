@@ -1,7 +1,7 @@
-echo "Install poetry and packages"
+echo "Install poetry"
 curl -sSL https://install.python-poetry.org | python3 -
-poetry shell
-poetry install
+export PATH="~/.local/bin:$PATH"
+source ~/.bashrc
 
 echo "Start download GPT4All model"
 dir="./models/"
