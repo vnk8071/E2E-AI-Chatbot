@@ -1,14 +1,14 @@
-from typing import List, Iterable, Any, Type, TypeVar
+from typing import List, Iterable, Any, Type, TypeVar, Optional, Dict
 from abc import ABC, abstractmethod
+from pydantic import BaseModel
 
 DB = TypeVar("DB", bound="DatabaseBase")
 
 
-class Document:
+class Document(BaseModel):
     """Interface for interacting with a document."""
-    id: str
     content: str
-    source: str
+    metadata: Optional[Dict]
 
 
 class DatabaseBase(ABC):
@@ -41,7 +41,7 @@ class DatabaseBase(ABC):
         Returns:
             List[str]: List of IDs of the added contents.
         """
-        contents = [document.content for document in documents]
+        contents = [document["content"] for document in documents]
         return self.add_contents(contents, **kargs)
 
     @classmethod

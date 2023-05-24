@@ -12,6 +12,7 @@ gradio = "3.28.3"
 pydantic = "^1"
 gpt4all = "0.2.3"
 pymongo = {extras = ["srv"], version = "^4.3.3"}
+pypdf = "^3.9.0"
 
 [build-system]
 requires = ["poetry-core"]
