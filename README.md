@@ -1,5 +1,4 @@
 # E2E-AI-Chatbot 🤖
-Description: Pipeline offline of using GPT4ALL model combine with own context for generating answer.
 
 [**Pipeline**](#pipeline) | [**Installation**](#installation-requirements) | [**UI Chatbot**](#ui-chatbot) | [**Model**](#models) | [**Database**](#databases)
 
