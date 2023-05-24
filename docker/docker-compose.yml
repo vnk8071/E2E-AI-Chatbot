@@ -1,0 +1,49 @@
+version: "3.0"
+services:
+  elasticsearch:
+    container_name: es-container
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    environment:
+      - xpack.security.enabled=false
+      - "discovery.type=single-node"
+    networks:
+      - es-net
+    ports:
+      - 9200:9200
+    volumes:
+      - dbdata:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+    restart: unless-stopped
+  
+  kibana:
+    container_name: kb-container
+    image: docker.elastic.co/kibana/kibana:7.6.2
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es-container:9200
+    networks:
+      - es-net
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    restart: unless-stopped
+  
+  mongodb:
+    container_name: mongo-container
+    image: mongo:6-jammy
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata:/data/db
+    restart: unless-stopped
+
+volumes:
+  dbdata:
+    driver: local
+    
+networks:
+  es-net:
+    driver: bridge
