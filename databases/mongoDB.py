@@ -45,7 +45,7 @@ class MongoDBClient(DatabaseBase):
         return ids
 
     def get_contents(self):
-        """"""
+        """Return all items in database"""
         return [doc for doc in self.mongo_connect.find()]
 
     @classmethod

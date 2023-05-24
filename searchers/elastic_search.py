@@ -1,5 +1,5 @@
 import uuid
-from typing import List, Optional, Dict, Iterable, Any, Tuple
+from typing import List, Optional, Dict, Any, Tuple
 from abc import ABC
 
 from searchers import SearchBase
@@ -61,10 +61,19 @@ class ElasticSearch(SearchBase, ABC):
                 f"Your elasticsearch client string is mis-formatted. Got error: {e} "
             )
 
+    def rec_to_actions(self, documents):
+        for i, document in enumerate(documents):
+            _id = str(uuid.uuid4())
+            yield {
+                "_op_type": "index",
+                "_index": self.index_name,
+                "content": document["content"],
+                "metadata": document["metadata"],
+                "_id": _id,
+            }
+
     def add_contents(
         self,
-        # contents: Iterable[str],
-        # metadatas: Optional[List[dict]] = None,
         documents: List[Document],
         refresh_indices: bool = True,
         **kwargs: Any,
@@ -80,39 +89,20 @@ class ElasticSearch(SearchBase, ABC):
             List of ids from adding the contents into the Elasticsearch.
         """
         try:
-            from elasticsearch.exceptions import NotFoundError
             from elasticsearch.helpers import bulk
         except ImportError:
             raise ImportError(
                 "Could not import elasticsearch python package. "
                 "Please install it with `poetry add elasticsearch`."
             )
-        requests = []
-        ids = []
 
         # check to see if the index already exists
-        try:
-            self.client.indices.get(index=self.index_name)
-        except NotFoundError:
+        if not (self.client.indices.exists(index=self.index_name)):
             self.client.indices.create(index=self.index_name)
 
-        for i, document in enumerate(documents):
-            # metadata = metadatas[i] if metadatas else {}
-            _id = str(uuid.uuid4())
-            request = {
-                "_op_type": "index",
-                "_index": self.index_name,
-                "content": document["content"],
-                "metadata": document["metadata"],
-                "_id": _id,
-            }
-            ids.append(_id)
-            requests.append(request)
-        bulk(self.client, requests)
-
+        bulk(self.client, self.rec_to_actions(documents))
         if refresh_indices:
             self.client.indices.refresh(index=self.index_name)
-        return ids
 
     def simple_search(
         self,
