@@ -10,6 +10,7 @@
 
 ## Installation Requirements
 - Minimum CPU 8GiB RAM
+- Uncomment line 8 packages = [{include = "**"}] to use all internal packages (Passing Flake8)
 - Install packages and download GPT4All model by
 ```bash
 chmod u+x ./setup.sh
