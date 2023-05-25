@@ -14,8 +14,6 @@
 ```bash
 chmod u+x ./setup.sh
 bash ./setup.sh
-poetry shell
-poetry install
 ```
 - Build MongoDB, Elasticsearch and Kibana
 ```
@@ -54,12 +52,12 @@ Run on: http://localhost:9200
 - From Langchain Framework: https://github.com/hwchase17/langchain
 - From GPT4All: https://github.com/nomic-ai/gpt4all
 ```
-@misc{gpt4all,
-  author = {Yuvanesh Anand and Zach Nussbaum and Brandon Duderstadt and Benjamin Schmidt and Andriy Mulyar},
-  title = {GPT4All: Training an Assistant-style Chatbot with Large Scale Data Distillation from GPT-3.5-Turbo},
+@misc{inherit-gpt4all,
+  author = {KhoiVN},
+  title = {Pipeline offine AI Chatbot using GPT4All model},
   year = {2023},
   publisher = {GitHub},
   journal = {GitHub repository},
-  howpublished = {\url{https://github.com/nomic-ai/gpt4all}},
+  howpublished = {\url{https://github.com/vnk8071/E2E-AI-Chatbot}},
 }
 ```

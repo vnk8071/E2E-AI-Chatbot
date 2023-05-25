@@ -1,5 +1,8 @@
 from databases import MongoDBClient
 from searchers import ElasticSearch
+from loggers import logging_custom
+
+logger = logging_custom()
 
 
 def main(args):
