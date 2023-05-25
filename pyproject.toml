@@ -5,7 +5,7 @@ description = ""
 authors = ["KhoiVN", "nguyenkhoi8071@gmail.com"]
 readme = "README.md"
 repository = "https://github.com/vnk8071/E2E-AI-Chatbot"
-packages = [{include = "**"}]
+# packages = [{include = "**"}] # Use in internal for import packages
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
@@ -15,6 +15,8 @@ gpt4all = "0.2.3"
 pymongo = {extras = ["srv"], version = "^4.3.3"}
 pypdf = "^3.9.0"
 elasticsearch = "^7"
+fastapi = "^0"
+uvicorn = "^0.22.0"
 
 [build-system]
 requires = ["poetry-core"]
