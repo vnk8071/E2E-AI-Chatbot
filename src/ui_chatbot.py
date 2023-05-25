@@ -1,6 +1,7 @@
 import gradio as gr
 
 from llms import GPT4AllModel
+from loggers import logging_custom
 from src.utils import (
     post_process_answer,
     post_process_code,
@@ -12,6 +13,7 @@ system_default = """You are GPT4All Assistant. \
 Use below context to answer the question."""
 server_error_msg = """**NETWORK ERROR DUE TO HIGH TRAFFIC. \
 PLEASE REGENERATE OR REFRESH THIS PAGE.**"""
+logger = logging_custom()
 
 
 def predict(
@@ -30,21 +32,25 @@ def predict(
             print(f"Model {model_type} not supported!")
 
         # Get the answer from the chain
+        logger.info(f"Question: {question}")
         answer = llm(
             system_content=system_content,
             question=question
         )
         answer = post_process_code(answer)
         answer = post_process_answer(answer)
+        logger.info(f"Answer: {answer}")
         history.append(question)
         history.append(answer)
         chatbot = [(history[i], history[i + 1])
                    for i in range(0, len(history), 2)]
         return chatbot, history
 
-    except Exception:
-        history.append("")
+    except Exception as e:
+        logger.info(f"Question: {e}")
         answer = server_error_msg + " (error_code: 503)"
+        logger.info(f"Answer: {answer}")
+        history.append("")
         history.append(answer)
         chatbot = [(history[i], history[i + 1])
                    for i in range(0, len(history), 2)]

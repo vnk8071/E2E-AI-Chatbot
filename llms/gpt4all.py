@@ -28,14 +28,23 @@ class GPT4AllModel(LLMBase):
             question: str,
             context: str = ""
     ) -> str:
-        system_prompt = f"""{system_content}
+        if context:
+            context_ = "\n".join(doc.content for doc in context)
+            system_prompt = f"""{system_content}.
 
-        Context:
-        {context}
+            Use below context to answer the question.
+            Context:
+            {context_}
 
-        Question:
-        {question}
-        """
+            Question:
+            {question}
+            """
+        else:
+            system_prompt = f"""{system_content}.
+
+            Question:
+            {question}
+            """
         return system_prompt
 
     def __call__(

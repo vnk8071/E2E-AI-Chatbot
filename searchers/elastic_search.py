@@ -18,8 +18,7 @@ def _default_script_query(query: str, filter: Optional[dict]) -> Dict:
                     "should": [
                         {
                             "multi_match": {
-                                "query": f"{query}",
-                                "fields": ["content"]
+                                "query": f"{query}"
                             }
                         },
                         {
@@ -139,7 +138,11 @@ class ElasticSearch(SearchBase, ABC):
             List of Documents most similar to the query.
         """
         script_query = _default_script_query(query, filter)
-        response = self.client.search(index=self.index_name, query=script_query, size=k)
+        response = self.client.search(
+            index=self.index_name,
+            body=script_query,
+            size=k
+        )
         hits = [hit for hit in response["hits"]["hits"]]
         docs_and_scores = [
             (
