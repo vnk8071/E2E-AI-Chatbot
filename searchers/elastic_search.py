@@ -120,8 +120,10 @@ class ElasticSearch(SearchBase, ABC):
             List of Documents most similar to the query.
         """
         docs_and_scores = self.simple_search_with_score(query, k, filter=filter)
-        documents = [d[0] for d in docs_and_scores]
-        return documents
+        if docs_and_scores is not None:
+            documents = [d[0] for d in docs_and_scores]
+            return documents
+        return None
 
     def simple_search_with_score(
         self,
@@ -137,24 +139,27 @@ class ElasticSearch(SearchBase, ABC):
         Returns:
             List of Documents most similar to the query.
         """
-        script_query = _default_script_query(query, filter)
-        response = self.client.search(
-            index=self.index_name,
-            body=script_query,
-            size=k
-        )
-        hits = [hit for hit in response["hits"]["hits"]]
-        docs_and_scores = [
-            (
-                Document(
-                    content=hit["_source"]["text"],
-                    metadata=hit["_source"]["metadata"],
-                ),
-                hit["_score"],
+        try:
+            script_query = _default_script_query(query, filter)
+            response = self.client.search(
+                index=self.index_name,
+                body=script_query,
+                size=k
             )
-            for hit in hits
-        ]
-        return docs_and_scores
+            hits = [hit for hit in response["hits"]["hits"]]
+            docs_and_scores = [
+                (
+                    Document(
+                        content=hit["_source"]["content"],
+                        metadata=hit["_source"]["metadata"],
+                    ),
+                    hit["_score"],
+                )
+                for hit in hits
+            ]
+            return docs_and_scores
+        except ValueError:
+            return None
 
     @classmethod
     def get_contents(

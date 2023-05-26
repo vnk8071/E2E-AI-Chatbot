@@ -26,9 +26,9 @@ class GPT4AllModel(LLMBase):
             self,
             system_content: str,
             question: str,
-            context: str = ""
+            context: str
     ) -> str:
-        if context:
+        if context is not None:
             context_ = "\n".join(doc.content for doc in context)
             system_prompt = f"""{system_content}.
 

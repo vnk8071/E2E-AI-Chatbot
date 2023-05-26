@@ -1,6 +1,6 @@
 # E2E-AI-Chatbot 🤖
 
-[**Pipeline**](#pipeline) | [**Installation**](#installation-requirements) | [**UI Chatbot**](#ui-chatbot) | [**Model**](#model) | [**Database**](#database) | [**Search**](#search)
+[**Pipeline**](#pipeline) | [**Installation**](#installation-requirements) | [**UserInterface**](#user-interface) | [**Model**](#model) | [**Database**](#database) | [**Search**](#search)
 
 
 [![Flake8 lint](https://github.com/vnk8071/E2E-AI-Chatbot/actions/workflows/lint.yml/badge.svg)](https://github.com/vnk8071/E2E-AI-Chatbot/actions/workflows/lint.yml)
@@ -16,30 +16,34 @@
 chmod u+x ./setup.sh
 bash ./setup.sh
 ```
-- Build MongoDB, Elasticsearch and Kibana
+- Build MongoDB, Mongo Express, Elasticsearch and Kibana
 ```
 docker compose -f docker/docker-compose.yml up
 ```
 
-## UI Chatbot
+## User Interface App
 ```
-poetry run python src/ui_chatbot.py --server-name "0.0.0.0" --server-port 8071
+poetry run python app.py --host 0.0.0.0 --port 8071
 ```
 Run on: http://localhost:8071
-<img src="https://user-images.githubusercontent.com/78080480/239847294-c07ef89d-c584-4e34-9697-f507ddd01882.PNG">
+<img src="https://user-images.githubusercontent.com/78080480/241147184-0c3bea3e-e19f-4532-863d-d5ddd112dea6.png">
 
 ## Model
 1. GPT4ALL: Current best commercially licensable model based on GPT-J and trained by Nomic AI on the latest curated GPT4All dataset.
 
 ## Database
 1. MongoDB
+Run on: http://localhost:27017
 ```
 mongoDB_host = "mongodb://localhost:27017/"
 poetry run python src/ingest_database.py --mongodb-host "mongodb://localhost:27017/" --data-path "samples/"
 ```
-Run on: http://localhost:27017
+Mongo Compass (Windows)
 <img src="https://user-images.githubusercontent.com/78080480/240465436-6cd732a7-bfd7-41ea-8da5-f7d9e36908fc.png">
 
+Mongo Express
+Run on: http://localhost:8081
+<img src="https://user-images.githubusercontent.com/78080480/241128094-d9b4469b-9a1e-4b7f-a0fd-1037a1bdeda5.png">
 ## Search
 1. Elasticsearch & Kibana
 ```
