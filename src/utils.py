@@ -18,15 +18,13 @@ def post_process_code(code):
 
 
 def post_process_answer(answer, metadata=None, server_host=None):
-    try:
-        source = metadata["source"]
-        page = metadata["page"]
+    if metadata is not None:
+        source = metadata[0].metadata["source"]
+        page = metadata[0].metadata["page"]
         url_pdf = f"{server_host}/show-pdf/{source}"
-        if source:
-            answer += f"<br><br>Source: <a href='{url_pdf}'>{source}#page={page}</a>"
-    finally:
-        answer = answer.replace("\n", "<br>")
-        return answer
+        answer += f"<br><br>Source: <a href='{url_pdf}'>{source}#page={page}</a>"
+    answer = answer.replace("\n", "<br>")
+    return answer
 
 
 def reset_textbox():

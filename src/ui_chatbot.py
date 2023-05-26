@@ -11,8 +11,7 @@ from src.utils import (
     )
 
 logger = logging_custom()
-system_default = """You are GPT4All Assistant. \
-Use below context to answer the question."""
+system_default = """You are GPT4All Assistant."""
 server_error_msg = """**NETWORK ERROR DUE TO HIGH TRAFFIC. \
 PLEASE REGENERATE OR REFRESH THIS PAGE.**"""
 llm = GPT4AllModel(model_path="models/ggml-gpt4all-j-v1.3-groovy.bin")
