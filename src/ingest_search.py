@@ -1,8 +1,17 @@
+import argparse
 from databases import MongoDBClient
 from searchers import ElasticSearch
-from loggers import logging_custom
+from loggers import AppLogger
 
-logger = logging_custom()
+logger = AppLogger().get_logger()
+parser = argparse.ArgumentParser()
+parser.add_argument("--mongodb-host", default="mongodb://localhost:27017/")
+parser.add_argument("--es-host", default="http://localhost:9200/")
+parser.add_argument("--index-name", default="document")
+args = parser.parse_args()
+logger.info(f"MongoDB Host: {args.mongodb_host}")
+logger.info(f"ElasticSearch Host: {args.es_host}")
+logger.info(f"Index name: {args.index_name}")
 
 
 def main(args):
@@ -17,10 +26,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--mongodb-host", default="mongodb://localhost:27017/")
-    parser.add_argument("--es-host", default="http://localhost:9200/")
-    parser.add_argument("--index_name", default="document")
-    args = parser.parse_args()
     main(args)

@@ -1,8 +1,15 @@
+import argparse
 from databases import MongoDBClient
 from extractors import PyPDFDirectoryLoader
-from loggers import logging_custom
+from loggers import AppLogger
 
-logger = logging_custom()
+logger = AppLogger().get_logger()
+parser = argparse.ArgumentParser()
+parser.add_argument("--mongodb-host", default="mongodb://localhost:27017/")
+parser.add_argument("--data-path", default="samples/")
+args = parser.parse_args()
+logger.info(f"MongoDB Host: {args.mongodb_host}")
+logger.info(f"Data path: {args.data_path}")
 
 
 def main(args):
@@ -15,9 +22,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--mongodb-host", default="mongodb://localhost:27017/")
-    parser.add_argument("--data-path", default="samples/")
-    args = parser.parse_args()
     main(args)

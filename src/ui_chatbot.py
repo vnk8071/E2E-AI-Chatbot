@@ -2,7 +2,7 @@ import gradio as gr
 
 from llms import GPT4AllModel
 from searchers import ElasticSearch
-from loggers import logging_custom
+from loggers import AppLogger
 from src.utils import (
     post_process_answer,
     post_process_code,
@@ -10,7 +10,7 @@ from src.utils import (
     clear_history
     )
 
-logger = logging_custom()
+logger = AppLogger().get_logger()
 system_default = """You are GPT4All Assistant."""
 server_error_msg = """**NETWORK ERROR DUE TO HIGH TRAFFIC. \
 PLEASE REGENERATE OR REFRESH THIS PAGE.**"""
@@ -41,7 +41,12 @@ def predict(
 
         # Get the answer from the chain
         logger.info(f"Question: {question}")
-        documents = es.simple_search(query=question)
+        if len(question) >= 10:
+            documents = es.simple_search(query=question)
+            logger.info(f"Document: {documents}")
+        else:
+            documents = None
+            logger.info("Simple question")
         answer = llm(
             system_content=system_content,
             question=question,
@@ -73,7 +78,7 @@ with gr.Blocks(
     css="""
     footer .svelte-1lyswbr {display: none !important;}
     #col_container {margin-left: auto; margin-right: auto;}
-    #chatbot .wrap.svelte-13f7djk {height: 70vh; max-height: 70vh}
+    #chatbot .wrap.svelte-13f7djk {height: 70vh; max-height: 65vh}
     #chatbot .message.user.svelte-13f7djk.svelte-13f7djk \
     {width:fit-content; background:orange; border-bottom-right-radius:0}
     #chatbot .message.bot.svelte-13f7djk.svelte-13f7djk \
@@ -178,5 +183,6 @@ if __name__ == '__main__':
         server_name=args.server_name,
         server_port=args.server_port,
         share=args.share,
-        debug=args.debug
+        debug=args.debug,
+        ssl_verify=False
     )
