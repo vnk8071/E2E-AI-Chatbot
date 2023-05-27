@@ -1,5 +1,6 @@
-from .custom import logging_custom
+from .custom import logging_custom, AppLogger
 
 __all__ = [
-    "logging_custom"
+    "logging_custom",
+    "AppLogger"
 ]
