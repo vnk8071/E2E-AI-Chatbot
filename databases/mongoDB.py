@@ -1,9 +1,10 @@
-import logging
+import json
 from typing import Any, Iterable, List, Type, Optional
 
 from databases import DB, Document, DatabaseBase
+from loggers import AppLogger
 
-logger = logging.getLogger(__name__)
+logger = AppLogger().get_logger()
 
 
 class MongoDBClient(DatabaseBase):
@@ -46,7 +47,12 @@ class MongoDBClient(DatabaseBase):
 
     def get_contents(self):
         """Return all items in database"""
-        return [doc for doc in self.mongo_connect.find()]
+        return [self._doc_to_json(doc) for doc in self.mongo_connect.find()]
+
+    def _doc_to_json(self, doc):
+        doc_str = json.dumps(doc, default=str)
+        doc_json = json.loads(doc_str)
+        return doc_json
 
     @classmethod
     def _add_contents(

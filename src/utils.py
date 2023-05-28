@@ -1,5 +1,9 @@
 import gradio as gr
 
+from loggers import AppLogger
+
+logger = AppLogger().get_logger()
+
 
 def clear_history():
     state = None
