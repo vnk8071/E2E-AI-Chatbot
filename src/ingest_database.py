@@ -1,4 +1,5 @@
 import argparse
+
 from databases import MongoDBClient
 from extractors import PyPDFDirectoryLoader
 from loggers import AppLogger

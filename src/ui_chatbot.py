@@ -3,18 +3,19 @@ import gradio as gr
 from llms import GPT4AllModel
 from searchers import ElasticSearch
 from loggers import AppLogger
-from src.utils import (
+from src import (
     post_process_answer,
     post_process_code,
     reset_textbox,
-    clear_history
+    clear_history,
+    save_upload_file
     )
 
 logger = AppLogger().get_logger()
 system_default = """You are GPT4All Assistant."""
 server_error_msg = """**NETWORK ERROR DUE TO HIGH TRAFFIC. \
 PLEASE REGENERATE OR REFRESH THIS PAGE.**"""
-llm = GPT4AllModel(model_path="models/ggml-gpt4all-j-v1.3-groovy.bin")
+# llm = GPT4AllModel(model_path="models/ggml-gpt4all-j-v1.3-groovy.bin")
 
 
 def predict(
@@ -29,11 +30,11 @@ def predict(
 ):
     try:
         # Prepare the LLM and Elasticsearch
-        global llm
-        if model_path != "models/ggml-gpt4all-j-v1.3-groovy.bin":
-            llm = GPT4AllModel(model_path=model_path)
-        elif model_type != "GPT4All":
-            logger.info(f"Model {model_type} not supported!")
+        # global llm
+        # if model_path != "models/ggml-gpt4all-j-v1.3-groovy.bin":
+        #     llm = GPT4AllModel(model_path=model_path)
+        # elif model_type != "GPT4All":
+        #     logger.info(f"Model {model_type} not supported!")
         es = ElasticSearch(
             elasticsearch_host=f"{server_host}:9200",
             index_name=index_name
@@ -94,76 +95,97 @@ with gr.Blocks(
     """
 ) as demo:
     gr.HTML(title)
-    with gr.Row():
-        with gr.Column(elem_id="col_container", scale=0.3):
-            with gr.Accordion("Prompt", open=True):
-                system_content = gr.Textbox(
-                    value=system_default,
-                    show_label=False)
-            with gr.Accordion("Config", open=True):
-                index_name = gr.Textbox(
-                        value="document",
-                        label="index_name"
+    with gr.Tab("Chatbot"):
+        with gr.Row():
+            with gr.Column(elem_id="col_container", scale=0.3):
+                with gr.Accordion("Prompt", open=True):
+                    system_content = gr.Textbox(
+                        value=system_default,
+                        show_label=False)
+                with gr.Accordion("Config", open=True):
+                    index_name = gr.Textbox(
+                            value="document",
+                            label="index_name"
+                        )
+                    server_host = gr.Textbox(
+                            value="http://localhost",
+                            label="server_host"
+                        )
+                    model_type = gr.Textbox(
+                        value="GPT4All",
+                        label="model_type"
                     )
-                server_host = gr.Textbox(
-                        value="http://localhost",
-                        label="server_host"
+                    model_path = gr.Textbox(
+                        value="models/ggml-gpt4all-j-v1.3-groovy.bin",
+                        label="model_path"
                     )
-                model_type = gr.Textbox(
-                    value="GPT4All",
-                    label="model_type"
-                )
-                model_path = gr.Textbox(
-                    value="models/ggml-gpt4all-j-v1.3-groovy.bin",
-                    label="model_path"
-                )
 
-        with gr.Column(elem_id="col_container"):
-            chatbot = gr.Chatbot(
-                elem_id="chatbot",
-                label="privateGPT"
-            )
-            question = gr.Textbox(
-                placeholder="Ask something",
-                show_label=False,
-                value=""
-            )
-            state = gr.State([])
-            with gr.Row():
-                with gr.Column():
-                    submit_btn = gr.Button(value="🚀 Send")
-                with gr.Column():
-                    clear_btn = gr.Button(value="🗑️ Clear history")
+            with gr.Column(elem_id="col_container"):
+                chatbot = gr.Chatbot(
+                    elem_id="chatbot",
+                    label="AI Chatbot 🤖"
+                )
+                question = gr.Textbox(
+                    placeholder="Ask something",
+                    show_label=False,
+                    value=""
+                )
+                state = gr.State([])
+                with gr.Row():
+                    with gr.Column():
+                        submit_btn = gr.Button(value="🚀 Send")
+                    with gr.Column():
+                        clear_btn = gr.Button(value="🗑️ Clear history")
 
-    question.submit(
-        predict,
-        [
-            system_content,
-            question, index_name,
-            server_host,
-            model_type,
-            model_path,
-            chatbot,
-            state
-        ],
-        [chatbot, state],
-    )
-    submit_btn.click(
-        predict,
-        [
-            system_content,
-            question, index_name,
-            server_host,
-            model_type,
-            model_path,
-            chatbot,
-            state
-        ],
-        [chatbot, state],
-    )
-    submit_btn.click(reset_textbox, [], [question])
-    clear_btn.click(clear_history, None, [chatbot, state, question])
-    question.submit(reset_textbox, [], [question])
+        question.submit(
+            predict,
+            [
+                system_content,
+                question, index_name,
+                server_host,
+                model_type,
+                model_path,
+                chatbot,
+                state
+            ],
+            [chatbot, state],
+        )
+        submit_btn.click(
+            predict,
+            [
+                system_content,
+                question, index_name,
+                server_host,
+                model_type,
+                model_path,
+                chatbot,
+                state
+            ],
+            [chatbot, state],
+        )
+        submit_btn.click(reset_textbox, [], [question])
+        clear_btn.click(clear_history, None, [chatbot, state, question])
+        question.submit(reset_textbox, [], [question])
+    with gr.Tab("Ingest"):
+        server_host = gr.Textbox(
+            value="http://localhost",
+            label="server_host"
+        )
+        uploaded_files = gr.Files(file_count="multiple")
+        logger.info(uploaded_files)
+        js = "(x) => confirm('Please wait \
+        some minutes for upload and ingest to db')"
+        try:
+            upload_btn = gr.Button(value="Upload & Ingest 🚀")
+            upload_btn.click(
+                save_upload_file,
+                uploaded_files,
+                server_host,
+                _js=js
+            )
+        except Exception:
+            gr.Error("Check server host")
+
     demo.queue(
         concurrency_count=10,
         status_update_rate="auto"
