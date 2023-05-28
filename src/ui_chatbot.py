@@ -3,19 +3,19 @@ import gradio as gr
 from llms import GPT4AllModel
 from searchers import ElasticSearch
 from loggers import AppLogger
-from src import (
+from src.utils import (
     post_process_answer,
     post_process_code,
     reset_textbox,
-    clear_history,
-    save_upload_file
+    clear_history
     )
+from src.functions import save_upload_file
 
 logger = AppLogger().get_logger()
 system_default = """You are GPT4All Assistant."""
 server_error_msg = """**NETWORK ERROR DUE TO HIGH TRAFFIC. \
 PLEASE REGENERATE OR REFRESH THIS PAGE.**"""
-# llm = GPT4AllModel(model_path="models/ggml-gpt4all-j-v1.3-groovy.bin")
+llm = GPT4AllModel(model_path="models/ggml-gpt4all-j-v1.3-groovy.bin")
 
 
 def predict(
@@ -30,11 +30,11 @@ def predict(
 ):
     try:
         # Prepare the LLM and Elasticsearch
-        # global llm
-        # if model_path != "models/ggml-gpt4all-j-v1.3-groovy.bin":
-        #     llm = GPT4AllModel(model_path=model_path)
-        # elif model_type != "GPT4All":
-        #     logger.info(f"Model {model_type} not supported!")
+        global llm
+        if model_path != "models/ggml-gpt4all-j-v1.3-groovy.bin":
+            llm = GPT4AllModel(model_path=model_path)
+        elif model_type != "GPT4All":
+            logger.info(f"Model {model_type} not supported!")
         es = ElasticSearch(
             elasticsearch_host=f"{server_host}:9200",
             index_name=index_name

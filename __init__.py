@@ -1,11 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, staticfiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from routers import ui_router, db_router
 
 
 def build_app():
     app = FastAPI(title='E2E-AI-CHATBOT')
+    app.mount("/static", StaticFiles(directory="static"), name="static")
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
