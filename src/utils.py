@@ -25,8 +25,9 @@ def post_process_answer(answer, metadata=None, server_host=None):
     if metadata is not None:
         source = metadata[0].metadata["source"]
         page = metadata[0].metadata["page"]
-        url_pdf = f"{server_host}/show-pdf/{source}"
-        answer += f"<br><br>Source: <a href='{url_pdf}'>{source}#page={page}</a>"
+        path = f"{source}#page={page}"
+        url_pdf = f"{server_host}/static/pdf/{path}"
+        answer += f"<br><br>Source: <a href='{url_pdf}' _target='blank'>{path}</a>"
     answer = answer.replace("\n", "<br>")
     return answer
 

@@ -1,6 +1,11 @@
 import shutil
-from fastapi import APIRouter, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi import (
+    APIRouter,
+    UploadFile,
+    )
+from fastapi.responses import (
+    HTMLResponse
+)
 
 from loggers import AppLogger
 
@@ -30,8 +35,3 @@ async def create_ingest(file: UploadFile):
             shutil.copyfileobj(file.file, buffer)
     finally:
         file.file.close()
-
-
-@db_router.get("/show-pdf/{pdf_path}")
-async def read_pdf(pdf_path):
-    return FileResponse(pdf_path)
