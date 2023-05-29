@@ -14,11 +14,11 @@
 
 ### Next stage:
 - [x] FastAPI & Gradio backend
-- [ ] Add UI ingest upload file
+- [x] Dockerize packages
+- [x] Add UI ingest upload file
 - [ ] Add login page
-- [ ] Add document page
+- [ ] Add docs
 - [ ] Nginx for http and https
-- [ ] Dockerize packages
 - [ ] K8s
 - [ ] CI/CD cloud (AWS/Azure)
 
@@ -26,20 +26,32 @@
 - Minimum CPU 8GiB RAM
 - Uncomment line 8 packages = [{include = "**"}] to use all internal packages (Passing Flake8)
 - Install packages and download GPT4All model by
+1. Run locally
 ```bash
 chmod u+x ./setup.sh
 bash ./setup.sh
 ```
 - Build MongoDB, Mongo Express, Logstash, Elasticsearch and Kibana
 ```
-docker compose -f docker/docker-compose.yml up
+docker compose -f docker-compose-service.yml up
+poetry run python app.py --host 0.0.0.0 --port 8071
+```
+2. Run docker
+```
+docker compose up
 ```
 ## User Interface App
 ```
 poetry run python app.py --host 0.0.0.0 --port 8071
 ```
 Run on: http://localhost:8071
+
+1. Chatbot:
 <img src="https://user-images.githubusercontent.com/78080480/241147184-0c3bea3e-e19f-4532-863d-d5ddd112dea6.png">
+
+2. Ingest PDF:
+<img src="https://user-images.githubusercontent.com/78080480/241676731-aabdcdfe-fda6-475c-8306-b57e5f4e4b54.png">
+
 <p align="right">(<a href="#e2e-ai-chatbot-">back to top</a>)</p>
 
 ## Model
@@ -49,7 +61,7 @@ Run on: http://localhost:8071
 1. MongoDB
 Run on: http://localhost:27017
 ```
-poetry run python src/ingest_database.py --mongodb-host "mongodb://localhost:27017/" --data-path "samples/"
+poetry run python src/ingest_database.py --mongodb-host "mongodb://localhost:27017/" --data-path "static/pdf/"
 ```
 ### Mongo Compass (Windows)
 <img src="https://user-images.githubusercontent.com/78080480/240465436-6cd732a7-bfd7-41ea-8da5-f7d9e36908fc.png">
@@ -59,6 +71,8 @@ Run on: http://localhost:8081
 <img src="https://user-images.githubusercontent.com/78080480/241128094-d9b4469b-9a1e-4b7f-a0fd-1037a1bdeda5.png">
 
 ## Data Migration
+Run on: http://localhost:9600
+
 <img src="https://user-images.githubusercontent.com/78080480/241519101-e22b955d-b072-4362-acb3-fe7ad8e7a746.png">
 
 ## Search
@@ -67,6 +81,7 @@ Run on: http://localhost:8081
 poetry run python src/ingest_search.py --mongodb-host "mongodb://localhost:27017/" --es-host "http://localhost:9200/" --index_name "document"
 ```
 Elasticsearch run on: http://localhost:9200
+
 Kibana run on: http://localhost:5601
 <img src="https://user-images.githubusercontent.com/78080480/240532984-f66cc3c3-a20b-4d93-a421-8553cec5dc46.png">
 
