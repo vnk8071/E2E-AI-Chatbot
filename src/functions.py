@@ -12,7 +12,7 @@ logger = AppLogger().get_logger()
 def save_upload_file(uploaded_files, server_host):
     try:
         for uploaded_file in uploaded_files:
-            DATA_PATH = "static/pdf"
+            DATA_PATH = "static/pdf/"
             file_name = os.path.basename(uploaded_file.orig_name)
             logger.info(f"file_name {file_name}")
             shutil.copy(

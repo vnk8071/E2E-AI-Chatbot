@@ -178,9 +178,12 @@ with gr.Blocks(
         try:
             upload_btn = gr.Button(value="Upload & Ingest 🚀")
             upload_btn.click(
-                save_upload_file,
-                uploaded_files,
-                server_host,
+                fn=save_upload_file,
+                inputs=[
+                    uploaded_files,
+                    server_host
+                ],
+                outputs=None,
                 _js=js
             )
         except Exception:

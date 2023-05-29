@@ -11,7 +11,7 @@ services:
     ports:
       - 9200:9200
     volumes:
-      - dbdata:/usr/share/elasticsearch/data
+      - esdata:/usr/share/elasticsearch/data
     ulimits:
       memlock:
         hard: -1
@@ -22,7 +22,7 @@ services:
     container_name: kibana-container
     image: docker.elastic.co/kibana/kibana:7.6.2
     environment:
-      - ELASTICSEARCH_HOSTS=http://es-container:9200
+      - ELASTICSEARCH_HOSTS=http://elastic-container:9200
     networks:
       - es-net
     depends_on:
@@ -32,11 +32,11 @@ services:
     restart: unless-stopped
   
   logstash:
-    container: logstash-container
+    container_name: logstash-container
     image: docker.elastic.co/logstash/logstash:7.6.2
     command: bash -c "cd bin && logstash-plugin install logstash-input-mongodb && logstash-plugin install logstash-output-elasticsearch && logstash -f /usr/share/logstash/config/logstash.conf"
     volumes:
-      - logstash/logstash.conf:/usr/share/logstash/config/logstash.conf
+      - ./logstash/logstash.conf:/usr/share/logstash/config/logstash.conf
     depends_on:
       - elasticsearch
       - mongodb
@@ -47,7 +47,7 @@ services:
     container_name: mongo-container
     image: mongo:6-jammy
     ports:
-      - '27017:27017'
+      - 27017:27017
     volumes:
       - dbdata:/data/db
     networks:
@@ -61,18 +61,17 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongodb
       ME_CONFIG_MONGODB_PORT: "27017"
     ports:
-      - "8081:8081"
+      - 8081:8081
     networks:
       - mongo-net
     depends_on:
       - mongodb
     restart: unless-stopped
-
-
+  
 volumes:
+  esdata:
   dbdata:
     driver: local
-  logstash:
     
 networks:
   es-net:
