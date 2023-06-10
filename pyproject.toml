@@ -9,7 +9,7 @@ repository = "https://github.com/vnk8071/E2E-AI-Chatbot"
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-gradio = "3.28.3"
+gradio = "3.34.0"
 pydantic = "^1"
 gpt4all = "0.2.3"
 pymongo = {extras = ["srv"], version = "^4.3.3"}
