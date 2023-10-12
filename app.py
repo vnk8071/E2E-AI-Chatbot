@@ -1,40 +1,33 @@
-import gradio as gr
-
-import mimetypes
-from importlib_resources import files
-import uvicorn
 import argparse
+import mimetypes
 import secrets
+
 import fastapi
+import gradio as gr
+import uvicorn
 from fastapi import Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import (
-    JSONResponse,
-    HTMLResponse,
     FileResponse,
-    PlainTextResponse
+    HTMLResponse,
+    JSONResponse,
+    PlainTextResponse,
 )
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
+from importlib_resources import files
 from starlette.responses import RedirectResponse, StreamingResponse
 
-from config import settings
-from src import demo
 from __init__ import app
+from config import settings
 from loggers import AppLogger
-from route_utils import strip_url, safe_join
+from route_utils import safe_join, strip_url
+from routers import db_router, ui_router
+from src import demo
 
 parser = argparse.ArgumentParser()
-parser.add_argument(
-    "--host",
-    default=settings.HOST,
-    type=str
-)
-parser.add_argument(
-    "--port",
-    default=settings.PORT,
-    type=int
-)
+parser.add_argument("--host", default=settings.HOST, type=str)
+parser.add_argument("--port", default=settings.PORT, type=int)
 args = parser.parse_args()
 logger = AppLogger().get_logger()
 templates = Jinja2Templates(directory="templates")
@@ -64,9 +57,9 @@ async def shutdown_event():
 
 @app.get("/user")
 def get_current_user(request: fastapi.Request):
-    token = request.cookies.get(
-        "access-token"
-    ) or request.cookies.get("access-token-unsecure")
+    token = request.cookies.get("access-token") or request.cookies.get(
+        "access-token-unsecure"
+    )
     logger.info(f"token: {token}")
     return app.tokens.get(token)
 
@@ -80,7 +73,6 @@ def login_check(user: str = Depends(get_current_user)):
     )
 
 
-# @app.middleware("http")
 @app.head("/", response_class=HTMLResponse)
 @app.get("/", response_class=HTMLResponse)
 def main(request: fastapi.Request):
@@ -141,9 +133,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
 @app.get("/config/", dependencies=[Depends(login_check)])
 def get_config(request: fastapi.Request):
     root_path = (
-        request.scope.get("root_path")
-        or request.headers.get("X-Direct-Url")
-        or ""
+        request.scope.get("root_path") or request.headers.get("X-Direct-Url") or ""
     )
     config = app.get_blocks().config
     logger.info(f"config: {config}")
@@ -170,12 +160,14 @@ async def favicon():
 
 @app.get("/theme.css", response_class=PlainTextResponse)
 def theme_css():
-    return PlainTextResponse(gr.themes.Default()._get_theme_css(), media_type="text/css")
-
-
-if __name__ == '__main__':
-    uvicorn.run(
-        app=app,
-        host=args.host,
-        port=args.port
+    return PlainTextResponse(
+        gr.themes.Default()._get_theme_css(), media_type="text/css"
     )
+
+
+app.include_router(router=ui_router, dependencies=[Depends(login_check)])
+app.include_router(router=db_router, dependencies=[Depends(login_check)])
+
+
+if __name__ == "__main__":
+    uvicorn.run(app=app, host=args.host, port=args.port)

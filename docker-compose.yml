@@ -17,7 +17,7 @@ services:
         hard: -1
         soft: -1
     restart: unless-stopped
-  
+
   kibana:
     container_name: kibana-container
     image: docker.elastic.co/kibana/kibana:7.6.2
@@ -30,7 +30,7 @@ services:
     ports:
       - 5601:5601
     restart: unless-stopped
-  
+
   logstash:
     container_name: logstash-container
     image: docker.elastic.co/logstash/logstash:7.6.2
@@ -53,7 +53,7 @@ services:
     networks:
       - mongo-net
     restart: unless-stopped
-  
+
   mongo-express:
     container_name: mongo-express-container
     image: mongo-express
@@ -78,14 +78,24 @@ services:
       - mongo-net
       - es-net
     restart: unless-stopped
-  
+
+  redis:
+    image: redis:6.2-alpine
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+    restart: unless-stopped
+
 volumes:
   esdata:
   dbdata:
     driver: local
-    
+  cache:
+    driver: local
+
 networks:
   es-net:
     driver: bridge
   mongo-net:
-
