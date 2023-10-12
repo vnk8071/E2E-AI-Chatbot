@@ -2,7 +2,7 @@ import shutil
 from fastapi import (
     APIRouter,
     UploadFile,
-    )
+)
 from fastapi.responses import (
     HTMLResponse
 )

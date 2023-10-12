@@ -6,14 +6,14 @@ from datetime import datetime
 def logging_custom(__name__):
     logging.config.fileConfig(
         'loggers/logging.conf',
-        defaults={'logfilename': 'loggers/logs/{:%Y-%m-%d}.log'.format(datetime.now())},
+        defaults={'logfilename': 'loggers/{:%Y-%m-%d}.log'.format(datetime.now())},
     )
     logger = logging.getLogger(__name__)
     return logger
 
 
 class AppLogger:
-    _logger_file = 'loggers/logs/{:%Y-%m-%d}.log'.format(datetime.now())
+    _logger_file = 'loggers/{:%Y-%m-%d}.log'.format(datetime.now())
     _LOGGER_CONFIG = 'loggers/logging.conf'
 
     def get_logger(self):

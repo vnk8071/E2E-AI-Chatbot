@@ -16,7 +16,8 @@
 - [x] FastAPI & Gradio backend
 - [x] Dockerize packages
 - [x] Add UI ingest upload file
-- [ ] Add login page
+- [x] Add login page
+- [x] Add pre-commit
 - [ ] Add docs
 - [ ] Nginx for http and https
 - [ ] K8s
@@ -27,11 +28,21 @@
 - Uncomment line 8 packages = [{include = "**"}] to use all internal packages (Passing Flake8)
 - Install packages and download GPT4All model by
 1. Run locally
+
+With poetry:
 ```bash
 chmod u+x ./setup.sh
 bash ./setup.sh
 ```
-- Build MongoDB, Mongo Express, Logstash, Elasticsearch and Kibana
+
+With pip:
+```bash
+pip install poetry
+poetry shell
+poetry install
+```
+
+Build MongoDB, Mongo Express, Logstash, Elasticsearch and Kibana
 ```
 docker compose -f docker-compose-service.yml up
 poetry run python app.py --host 0.0.0.0 --port 8071
@@ -42,14 +53,22 @@ docker compose up
 ```
 ## User Interface App
 ```
-poetry run python app.py --host 0.0.0.0 --port 8071
+make run
 ```
 Run on: http://localhost:8071
 
-1. Chatbot:
+### Login:
+```
+Account: admin
+Password: admin
+```
+
+<img src="https://user-images.githubusercontent.com/78080480/274474984-f9902c39-bc0a-42f0-95d0-3fe3c0ebefda.png">
+
+### Chatbot:
 <img src="https://user-images.githubusercontent.com/78080480/241147184-0c3bea3e-e19f-4532-863d-d5ddd112dea6.png">
 
-2. Ingest PDF:
+### Ingest PDF:
 <img src="https://user-images.githubusercontent.com/78080480/241676731-aabdcdfe-fda6-475c-8306-b57e5f4e4b54.png">
 
 <p align="right">(<a href="#e2e-ai-chatbot-">back to top</a>)</p>

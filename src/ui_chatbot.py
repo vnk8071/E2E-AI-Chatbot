@@ -8,14 +8,12 @@ from src.utils import (
     post_process_code,
     reset_textbox,
     clear_history
-    )
+)
 from src.functions import save_upload_file
+from config import settings
 
 logger = AppLogger().get_logger()
-system_default = """You are GPT4All Assistant."""
-server_error_msg = """**NETWORK ERROR DUE TO HIGH TRAFFIC. \
-PLEASE REGENERATE OR REFRESH THIS PAGE.**"""
-llm = GPT4AllModel(model_path="models/ggml-gpt4all-j-v1.3-groovy.bin")
+llm = GPT4AllModel(model_path=settings.MODEL_PATH)
 
 
 def predict(
@@ -31,7 +29,7 @@ def predict(
     try:
         # Prepare the LLM and Elasticsearch
         global llm
-        if model_path != "models/ggml-gpt4all-j-v1.3-groovy.bin":
+        if model_path != settings.MODEL_PATH:
             llm = GPT4AllModel(model_path=model_path)
         elif model_type != "GPT4All":
             logger.info(f"Model {model_type} not supported!")
@@ -64,7 +62,7 @@ def predict(
 
     except Exception as e:
         logger.info(f"Question: {e}")
-        answer = server_error_msg + " (error_code: 503)"
+        answer = settings.SERVER_ERROR_MSG + " (error_code: 503)"
         logger.info(f"Answer: {answer}")
         history.append("")
         history.append(answer)
@@ -73,16 +71,16 @@ def predict(
         return chatbot, history
 
 
-title = """<h1 align="center">Chat with AI Chatbot🤖</h1>"""
+title = """<h1 align="center">Chat with AI Chatbot 🤖</h1>"""
 
 with gr.Blocks(
     css="""
     footer .svelte-1lyswbr {display: none !important;}
     #col_container {margin-left: auto; margin-right: auto;}
-    #chatbot .wrap.svelte-13f7djk {height: 70vh; max-height: 65vh}
-    #chatbot .message.user.svelte-13f7djk.svelte-13f7djk \
+    #chatbot .wrap.svelte-17nzccn {height: 70vh; max-height: 65vh}
+    #chatbot .message.user.svelte-17nzccn.svelte-17nzccn \
     {width:fit-content; background:orange; border-bottom-right-radius:0}
-    #chatbot .message.bot.svelte-13f7djk.svelte-13f7djk \
+    #chatbot .message.bot.svelte-17nzccn.svelte-17nzccn \
     {width:fit-content; padding-left: 16px; border-bottom-left-radius:0}
     #chatbot .pre {border:2px solid white;}
     pre {
@@ -100,23 +98,23 @@ with gr.Blocks(
             with gr.Column(elem_id="col_container", scale=0.3):
                 with gr.Accordion("Prompt", open=True):
                     system_content = gr.Textbox(
-                        value=system_default,
+                        value=settings.SYSTEM_DEFAULT,
                         show_label=False)
                 with gr.Accordion("Config", open=True):
                     index_name = gr.Textbox(
-                            value="document",
-                            label="index_name"
-                        )
+                        value=settings.INDEX_NAME,
+                        label="index_name"
+                    )
                     server_host = gr.Textbox(
-                            value="http://localhost",
-                            label="server_host"
-                        )
+                        value=settings.SERVER_HOST,
+                        label="server_host"
+                    )
                     model_type = gr.Textbox(
-                        value="GPT4All",
+                        value=settings.MODEL_TYPE,
                         label="model_type"
                     )
                     model_path = gr.Textbox(
-                        value="models/ggml-gpt4all-j-v1.3-groovy.bin",
+                        value=settings.MODEL_PATH,
                         label="model_path"
                     )
 
@@ -168,7 +166,7 @@ with gr.Blocks(
         question.submit(reset_textbox, [], [question])
     with gr.Tab("Ingest"):
         server_host = gr.Textbox(
-            value="http://localhost",
+            value=settings.SERVER_HOST,
             label="server_host"
         )
         uploaded_files = gr.Files(file_count="multiple")
@@ -188,11 +186,6 @@ with gr.Blocks(
             )
         except Exception:
             gr.Error("Check server host")
-
-    demo.queue(
-        concurrency_count=10,
-        status_update_rate="auto"
-    )
 
 
 if __name__ == '__main__':
