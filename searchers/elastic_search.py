@@ -13,31 +13,19 @@ def _default_script_query(query: str, filter: Optional[dict]) -> Dict:
     else:
         filter = {"match_all": {}}
     return {
-            "query": {
-                "bool": {
-                    "should": [
-                        {
-                            "multi_match": {
-                                "query": f"{query}"
-                            }
-                        },
-                        {
-                            "match_phrase": {
-                                "content": {
-                                    "query": f"{query}",
-                                    "boost": 2
-                                }
-                            }
-                        }
-                    ]
-                }
+        "query": {
+            "bool": {
+                "should": [
+                    {"multi_match": {"query": f"{query}"}},
+                    {"match_phrase": {"content": {"query": f"{query}", "boost": 2}}},
+                ]
             }
         }
+    }
 
 
 class ElasticSearch(SearchBase, ABC):
-    """Wrapper around Elasticsearch as a database.
-    """
+    """Wrapper around Elasticsearch as a database."""
 
     def __init__(
         self,
@@ -104,11 +92,7 @@ class ElasticSearch(SearchBase, ABC):
             self.client.indices.refresh(index=self.index_name)
 
     def simple_search(
-        self,
-        query: str,
-        k: int = 2,
-        filter: Optional[dict] = None,
-        **kwargs: Any
+        self, query: str, k: int = 2, filter: Optional[dict] = None, **kwargs: Any
     ) -> List[Document]:
         """Return docs most similar to query.
 
@@ -126,11 +110,7 @@ class ElasticSearch(SearchBase, ABC):
         return None
 
     def simple_search_with_score(
-        self,
-        query: str,
-        k: int = 2,
-        filter: Optional[dict] = None,
-        **kwargs: Any
+        self, query: str, k: int = 2, filter: Optional[dict] = None, **kwargs: Any
     ) -> List[Tuple[Document, float]]:
         """Return docs most similar to query.
         Args:
@@ -142,9 +122,7 @@ class ElasticSearch(SearchBase, ABC):
         try:
             script_query = _default_script_query(query, filter)
             response = self.client.search(
-                index=self.index_name,
-                body=script_query,
-                size=k
+                index=self.index_name, body=script_query, size=k
             )
             hits = [hit for hit in response["hits"]["hits"]]
             docs_and_scores = [
@@ -171,8 +149,7 @@ class ElasticSearch(SearchBase, ABC):
         refresh_indices: bool = True,
         **kwargs: Any,
     ):
-        """Construct ElasticSearch wrapper from raw documents.
-        """
+        """Construct ElasticSearch wrapper from raw documents."""
         elasticsearch_host = elasticsearch_host
         index_name = index_name or uuid.uuid4().hex
         scoresearch = cls(elasticsearch_host, index_name, **kwargs)

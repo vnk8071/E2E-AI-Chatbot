@@ -72,7 +72,7 @@ class PyPDFParser(BaseBlobParser):
             yield from [
                 Document(
                     content=page.extract_text(),
-                    metadata={"source": blob.source, "page": page_number+1},
+                    metadata={"source": blob.source, "page": page_number + 1},
                 )
                 for page_number, page in enumerate(pdf_reader.pages)
             ]

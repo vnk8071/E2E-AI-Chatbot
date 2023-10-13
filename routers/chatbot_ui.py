@@ -5,7 +5,7 @@ from llms import GPT4AllModel
 from loggers import AppLogger
 from memories import RedisMemory
 from searchers import ElasticSearch
-from src.utils import (
+from src import (
     clear_history,
     post_process_answer,
     post_process_code,
@@ -23,8 +23,8 @@ def predict(
     server_host: str,
     model_type: str,
     model_path: str,
-    chatbot: list = [],
-    history: list = [],
+    chatbot: list,
+    history: list,
 ):
     try:
         # Prepare the LLM and Elasticsearch
@@ -79,6 +79,11 @@ def predict(
 title = """
 <h1 align="center">Chat with AI Chatbot 🤖</h1>
 """
+current_version = "2.0.0"
+version = f"""
+- Version 1.0.0: Pipeline with GPT4All, Elasticsearch, MongoDB and Gradio
+- Version {current_version}: Add Redis Memory, Version, Login, and change User Interface
+"""
 
 with gr.Blocks(
     css="""
@@ -98,7 +103,7 @@ with gr.Blocks(
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
     }
     """
-) as demo:
+) as chatbot_router:
     gr.HTML(value=title)
     with gr.Row():
         with gr.Column(elem_id="col_container", scale=1):
@@ -115,15 +120,16 @@ with gr.Blocks(
                 model_path = gr.Textbox(value=settings.MODEL_PATH, label="model_path")
 
         with gr.Column(elem_id="col_container", scale=3):
+            inital_chat = ["👋", "Hi user, I'm an AI Assistant 🤖 trained from GPT4ALL!"]
             chatbot = gr.Chatbot(
-                value=[["Hi user, I'm an AI Assistant 🤖 trained from GPT4ALL!", "💬"]],
+                value=[inital_chat],
                 elem_id="chatbot",
-                label="AI Chatbot 🤖",
+                label=f"AI Chatbot 🤖 - version {current_version}",
             )
             question = gr.Textbox(
                 placeholder="Ask something", show_label=False, value=""
             )
-            state = gr.State([])
+            state = gr.State(inital_chat)
             with gr.Row():
                 with gr.Column():
                     submit_btn = gr.Button(value="🚀 Send")
@@ -133,13 +139,15 @@ with gr.Blocks(
     gr.HTML(value="<h3>📋 Services User Interface</h3>")
     with gr.Row():
         with gr.Column():
-            gr.Button(value="Ingest Database", link="/ingest")
+            gr.Button(value="Ingest Database", link="/show-ingest")
         with gr.Column():
             gr.Button(value="Mongo Express", link="/mongoexpress")
         with gr.Column():
             gr.Button(value="Elastic Search", link="/elasticsearch")
         with gr.Column():
             gr.Button(value="Kibana", link="/kibana")
+
+    gr.Markdown(version)
 
     question.submit(
         predict,
@@ -184,7 +192,7 @@ if __name__ == "__main__":
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
-    demo.launch(
+    chatbot_router.launch(
         server_name=args.server_name,
         server_port=args.server_port,
         share=args.share,

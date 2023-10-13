@@ -1,7 +1,7 @@
 import argparse
 import mimetypes
 import secrets
-
+import shutil
 import fastapi
 import gradio as gr
 import uvicorn
@@ -22,8 +22,7 @@ from __init__ import app
 from config import settings
 from loggers import AppLogger
 from route_utils import safe_join, strip_url
-from routers import db_router, ui_router
-from src import demo
+from routers import db_router, ui_router, chatbot_router, ingest_router
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--host", default=settings.HOST, type=str)
@@ -80,23 +79,22 @@ def main(request: fastapi.Request):
         return RedirectResponse("/show-app")
     mimetypes.add_type("application/javascript", ".js")
 
-    config = {
-        "auth_required": True,
-        "auth_message": "Please login to access this app.",
-        "space_id": "",
-        "root": "",
-    }
-    logger.info(f"config: {config}")
     return templates.TemplateResponse(
         "frontend/index.html",
-        {"request": request, "config": config},
+        {"request": request},
     )
 
 
 @app.get("/show-app", dependencies=[Depends(login_check)])
 async def show(user: str = Depends(get_current_user)):
-    gr.mount_gradio_app(app, demo, "/chat")
-    return RedirectResponse("/chat")
+    gr.mount_gradio_app(app, chatbot_router, "/chat/")
+    return RedirectResponse("/chat/")
+
+
+@app.get("/show-ingest", dependencies=[Depends(login_check)])
+async def ingest_page():
+    gr.mount_gradio_app(app, ingest_router, "/ingest/")
+    return RedirectResponse("/ingest/")
 
 
 @app.get("/token")
@@ -125,18 +123,18 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
             value=token,
             httponly=True,
         )
+        logger.info(f"response: {response}")
         return response
     else:
         raise HTTPException(status_code=400, detail="Incorrect credentials.")
 
 
-@app.get("/config/", dependencies=[Depends(login_check)])
+@app.get("/config", dependencies=[Depends(login_check)])
 def get_config(request: fastapi.Request):
     root_path = (
         request.scope.get("root_path") or request.headers.get("X-Direct-Url") or ""
     )
     config = app.get_blocks().config
-    logger.info(f"config: {config}")
     config["root"] = strip_url(root_path)
     return config
 

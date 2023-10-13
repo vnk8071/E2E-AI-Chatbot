@@ -1,7 +1,10 @@
-from .ui_api import ui_router
-from .db_api import db_router
+from .service_api import ui_router
+from .db_api import db_router, ingest_router
+from .chatbot_ui import chatbot_router
 
 __all__ = [
     "ui_router",
-    "db_router"
+    "db_router",
+    "chatbot_router",
+    "ingest_router",
 ]

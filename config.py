@@ -13,8 +13,13 @@ class Settings(BaseSettings):
     MODEL_TYPE = "GPT4All"
     SERVER_HOST = "http://localhost"
     INDEX_NAME = "document"
-    SYSTEM_DEFAULT = """You are GPT4All Assistant help to answer questions about private document."""
+    SYSTEM_DEFAULT = (
+        """You are GPT4All Assistant help to answer questions about private document."""
+    )
     SERVER_ERROR_MSG = """**NETWORK ERROR DUE TO HIGH TRAFFIC. PLEASE REGENERATE OR REFRESH THIS PAGE.**"""
+
+    # Config database
+    DATA_PATH = "static/pdf/"
 
 
 settings = Settings()

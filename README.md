@@ -92,6 +92,9 @@ Password: admin
 ### Chatbot:
 <img src="https://user-images.githubusercontent.com/78080480/241147184-0c3bea3e-e19f-4532-863d-d5ddd112dea6.png">
 
+New version:
+<img src="https://user-images.githubusercontent.com/78080480/274782483-431171ec-c311-4754-bd58-8fb8ec79afd7.png">
+
 ### Ingest PDF:
 <img src="https://user-images.githubusercontent.com/78080480/241676731-aabdcdfe-fda6-475c-8306-b57e5f4e4b54.png">
 
