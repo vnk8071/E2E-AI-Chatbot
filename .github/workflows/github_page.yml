@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    # Review gh actions docs if you want to further define triggers, paths, etc
+    # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#on
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "YARN_CACHE_DIR=$(yarn cache dir)" >> "${GITHUB_OUTPUT}"
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build website
+        run: yarn build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: build
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

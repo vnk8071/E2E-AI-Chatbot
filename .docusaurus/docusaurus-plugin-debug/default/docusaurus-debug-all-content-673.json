@@ -1,0 +1,141 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "loadedVersions": [
+        {
+          "versionName": "current",
+          "label": "Next",
+          "banner": null,
+          "badge": false,
+          "noIndex": false,
+          "className": "docs-version-current",
+          "path": "/e2e-ai-chatbot/docs",
+          "tagsPath": "/e2e-ai-chatbot/docs/tags",
+          "isLast": true,
+          "routePriority": -1,
+          "sidebarFilePath": "/Users/macos/projects/E2E-AI-Chatbot/sidebars.js",
+          "contentPath": "/Users/macos/projects/E2E-AI-Chatbot/docs",
+          "contentPathLocalized": "/Users/macos/projects/E2E-AI-Chatbot/i18n/en/docusaurus-plugin-content-docs/current",
+          "docs": [
+            {
+              "unversionedId": "get-started",
+              "id": "get-started",
+              "title": "Get Started",
+              "description": "Run locally",
+              "source": "@site/docs/get-started.md",
+              "sourceDirName": ".",
+              "slug": "/get-started",
+              "permalink": "/e2e-ai-chatbot/docs/get-started",
+              "draft": false,
+              "editUrl": "https://github.com/vnk8071/e2e-ai-chatbot/tree/main/docs/get-started.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_label": "Get Started",
+                "sidebar_position": 2
+              },
+              "sidebar": "sideBar",
+              "previous": {
+                "title": "Installation",
+                "permalink": "/e2e-ai-chatbot/docs/installation"
+              }
+            },
+            {
+              "unversionedId": "installation",
+              "id": "installation",
+              "title": "Installation Requirements",
+              "description": "- Minimum CPU 8GiB RAM",
+              "source": "@site/docs/installation.md",
+              "sourceDirName": ".",
+              "slug": "/installation",
+              "permalink": "/e2e-ai-chatbot/docs/installation",
+              "draft": false,
+              "editUrl": "https://github.com/vnk8071/e2e-ai-chatbot/tree/main/docs/installation.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 2,
+              "frontMatter": {
+                "sidebar_label": "Installation",
+                "sidebar_position": 2
+              },
+              "sidebar": "sideBar",
+              "previous": {
+                "title": "Introduction",
+                "permalink": "/e2e-ai-chatbot/docs/introduction"
+              },
+              "next": {
+                "title": "Get Started",
+                "permalink": "/e2e-ai-chatbot/docs/get-started"
+              }
+            },
+            {
+              "unversionedId": "introduction",
+              "id": "introduction",
+              "title": "E2E-AI-Chatbot 🤖",
+              "description": "Pipeline | User Interface | Model | Database | Search | Contact",
+              "source": "@site/docs/introduction.md",
+              "sourceDirName": ".",
+              "slug": "/introduction",
+              "permalink": "/e2e-ai-chatbot/docs/introduction",
+              "draft": false,
+              "editUrl": "https://github.com/vnk8071/e2e-ai-chatbot/tree/main/docs/introduction.md",
+              "tags": [],
+              "version": "current",
+              "sidebarPosition": 1,
+              "frontMatter": {
+                "sidebar_label": "Introduction",
+                "sidebar_position": 1
+              },
+              "sidebar": "sideBar",
+              "next": {
+                "title": "Installation",
+                "permalink": "/e2e-ai-chatbot/docs/installation"
+              }
+            }
+          ],
+          "drafts": [],
+          "sidebars": {
+            "sideBar": [
+              {
+                "type": "doc",
+                "id": "introduction"
+              },
+              {
+                "type": "doc",
+                "id": "installation"
+              },
+              {
+                "type": "doc",
+                "id": "get-started"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "docusaurus-plugin-content-blog": {
+    "default": {
+      "blogSidebarTitle": "Recent posts",
+      "blogPosts": [],
+      "blogListPaginated": [],
+      "blogTags": {},
+      "blogTagsListPath": "/e2e-ai-chatbot/blog/tags",
+      "blogTagsPaginated": []
+    }
+  },
+  "docusaurus-plugin-content-pages": {
+    "default": [
+      {
+        "type": "jsx",
+        "permalink": "/e2e-ai-chatbot/",
+        "source": "@site/src/pages/index.js"
+      }
+    ]
+  },
+  "docusaurus-plugin-debug": {},
+  "docusaurus-theme-classic": {},
+  "docusaurus-bootstrap-plugin": {},
+  "docusaurus-mdx-fallback-plugin": {}
+}

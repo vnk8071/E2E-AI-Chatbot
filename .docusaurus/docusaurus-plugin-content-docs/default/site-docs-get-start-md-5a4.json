@@ -1,0 +1,19 @@
+{
+  "unversionedId": "get_start",
+  "id": "get_start",
+  "title": "Get Started",
+  "description": "Run locally",
+  "source": "@site/docs/get_start.md",
+  "sourceDirName": ".",
+  "slug": "/get_start",
+  "permalink": "/e2e-ai-chatbot/docs/get_start",
+  "draft": false,
+  "editUrl": "https://github.com/vnk8071/e2e-ai-chatbot/tree/main/docs/get_start.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_label": "Get Started",
+    "sidebar_position": 2
+  }
+}

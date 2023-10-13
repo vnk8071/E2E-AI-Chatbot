@@ -1,0 +1,43 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/e2e-ai-chatbot/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/e2e-ai-chatbot/docs",
+          "mainDocId": "introduction",
+          "docs": [
+            {
+              "id": "get-started",
+              "path": "/e2e-ai-chatbot/docs/get-started",
+              "sidebar": "sideBar"
+            },
+            {
+              "id": "installation",
+              "path": "/e2e-ai-chatbot/docs/installation",
+              "sidebar": "sideBar"
+            },
+            {
+              "id": "introduction",
+              "path": "/e2e-ai-chatbot/docs/introduction",
+              "sidebar": "sideBar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "sideBar": {
+              "link": {
+                "path": "/e2e-ai-chatbot/docs/introduction",
+                "label": "introduction"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

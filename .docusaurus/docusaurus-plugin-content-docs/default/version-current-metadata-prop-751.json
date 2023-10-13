@@ -1,0 +1,52 @@
+{
+  "pluginId": "default",
+  "version": "current",
+  "label": "Next",
+  "banner": null,
+  "badge": false,
+  "noIndex": false,
+  "className": "docs-version-current",
+  "isLast": true,
+  "docsSidebars": {
+    "sideBar": [
+      {
+        "type": "link",
+        "label": "Introduction",
+        "href": "/e2e-ai-chatbot/docs/introduction",
+        "docId": "introduction"
+      },
+      {
+        "type": "link",
+        "label": "Installation",
+        "href": "/e2e-ai-chatbot/docs/installation",
+        "docId": "installation"
+      },
+      {
+        "type": "link",
+        "label": "Get Started",
+        "href": "/e2e-ai-chatbot/docs/get-started",
+        "docId": "get-started"
+      }
+    ]
+  },
+  "docs": {
+    "get-started": {
+      "id": "get-started",
+      "title": "Get Started",
+      "description": "Run locally",
+      "sidebar": "sideBar"
+    },
+    "installation": {
+      "id": "installation",
+      "title": "Installation Requirements",
+      "description": "- Minimum CPU 8GiB RAM",
+      "sidebar": "sideBar"
+    },
+    "introduction": {
+      "id": "introduction",
+      "title": "E2E-AI-Chatbot 🤖",
+      "description": "Pipeline | User Interface | Model | Database | Search | Contact",
+      "sidebar": "sideBar"
+    }
+  }
+}
