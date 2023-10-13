@@ -3,7 +3,7 @@ sidebar_label: 'Introduction'
 sidebar_position: 1
 ---
 
-# E2E-AI-Chatbot 🤖
+# End-to-end AI Chatbot 🤖
 
 [**Pipeline**](#pipeline) | [**User Interface**](#user-interface-app) | [**Model**](#model) | [**Database**](#database) | [**Search**](#search) | [**Contact**](#contact)
 

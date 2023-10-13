@@ -22,7 +22,7 @@ poetry shell
 poetry install
 ```
 
-Build MongoDB, Mongo Express, Logstash, Elasticsearch and Kibana
+Build MongoDB, Mongo Express, Logstash, Elasticsearch, Kibana and Redis
 ```
 docker compose -f docker-compose-service.yml up
 poetry run python app.py --host 0.0.0.0 --port 8071

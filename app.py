@@ -1,7 +1,6 @@
 import argparse
 import mimetypes
 import secrets
-import shutil
 import fastapi
 import gradio as gr
 import uvicorn
@@ -21,8 +20,14 @@ from starlette.responses import RedirectResponse, StreamingResponse
 from __init__ import app
 from config import settings
 from loggers import AppLogger
-from route_utils import safe_join, strip_url
-from routers import db_router, ui_router, chatbot_router, ingest_router
+from routers import (
+    db_router,
+    ui_router,
+    chatbot_router,
+    ingest_router,
+    safe_join,
+    strip_url,
+)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--host", default=settings.HOST, type=str)
