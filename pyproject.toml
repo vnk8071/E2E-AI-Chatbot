@@ -13,7 +13,7 @@ gradio = "3.47.1"
 pydantic = "^1"
 gpt4all = "0.2.3"
 pymongo = {extras = ["srv"], version = "^4.3.3"}
-pypdf = "^3.9.0"
+pypdf = "^3.17.0"
 elasticsearch = "^7"
 fastapi = "^0"
 uvicorn = "^0.22.0"
