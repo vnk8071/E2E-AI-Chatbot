@@ -1,3 +1,12 @@
+# Cloudflare AI Demo: Company Brain Assistant ☁️
+
+> **New:** [`cloudflare-company-brain/`](cloudflare-company-brain) is a Cloudflare-native demo for the Company Brain Assistant. It is an internal knowledge assistant for a DTC brand that retrieves from sample product info, brand guidelines, SOPs, customer research and creative learnings. It cites sources, follows the compliance rules in the knowledge base, says when it doesn't have enough information, and generates a creative brief.
+>
+> **Stack (custom RAG):** Workers · Workers AI · AI Gateway · Vectorize · R2 · D1 · KV · Durable Objects.
+> See [cloudflare-company-brain/README.md](cloudflare-company-brain/README.md) for architecture, reliability design and deploy steps. The sections below describe the original self-hosted GPT4All chatbot.
+
+---
+
 # E2E-AI-Chatbot 🤖
 
 [**Pipeline**](#pipeline) | [**Installation**](#installation-requirements) | [**User Interface**](#user-interface-app) | [**Model**](#model) | [**Database**](#database) | [**Search**](#search) | [**Contact**](#contact)
