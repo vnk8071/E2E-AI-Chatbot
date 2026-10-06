@@ -1,0 +1,22 @@
+{
+  "name": "company-brain",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test scripts/guard.test.mjs scripts/eval.test.mjs",
+    "setup": "bash scripts/setup.sh",
+    "ingest": "bash scripts/ingest.sh",
+    "eval": "node scripts/eval/run.mjs",
+    "eval:retrieval": "node scripts/eval/run.mjs --mode retrieval",
+    "eval:compare": "node scripts/eval/run.mjs --baseline scripts/eval/baseline.json"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250901.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.6.0",
+    "wrangler": "^4.0.0"
+  }
+}

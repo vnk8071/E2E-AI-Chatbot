@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "company-brain",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-09-01",
+  "ai": { "binding": "AI" },
+  "assets": { "directory": "./public" },
+  "vectorize": [{ "binding": "VECTORS", "index_name": "company-brain", "remote": true }],
+  "r2_buckets": [{ "binding": "DOCS", "bucket_name": "company-brain-docs" }],
+  "d1_databases": [
+    { "binding": "DB", "database_name": "company-brain", "database_id": "REPLACE_WITH_D1_ID" }
+  ],
+  "kv_namespaces": [{ "binding": "CACHE", "id": "REPLACE_WITH_KV_ID" }],
+  "durable_objects": { "bindings": [{ "name": "SESSION", "class_name": "ChatSession" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ChatSession"] }],
+  "vars": {
+    "GATEWAY_ID": "company-brain",
+    "CHAT_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "EMBED_MODEL": "@cf/baai/bge-base-en-v1.5",
+    "MIN_SCORE": "0.55",
+    "RATE_LIMIT_PER_MIN": "20",
+    "CACHE_TTL_SECONDS": "3600"
+  }
+}
